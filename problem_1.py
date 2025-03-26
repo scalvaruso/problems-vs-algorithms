@@ -22,7 +22,37 @@ def sqrt(number: int) -> int:
     Returns:
     int: Floored square root
     """
-    pass
+
+    # Handle negative numbers, as their real square root is undefined.
+
+    if number < 0:
+        return None                 # Returning None to indicate invalid input.
+
+    # Handle base cases: sqrt(0) = 0, sqrt(1) = 1.
+
+    if number == 0 or number == 1:
+        return number
+
+    # Using binary search to find the floored square root efficiently.
+    # Binary search runs in O(log n) time complexity.
+
+    left, right = 1, number         # Search space: from 1 to number.
+    solution = 0                    # Variable to store the potential answer.
+
+    while left <= right:
+        mid = (left + right) // 2   # Find the middle element.
+        mid_squared = mid * mid     # Compute mid squared.
+
+        if mid_squared == number:
+            return mid              # If mid^2 is exactly the number, return mid.
+        elif mid_squared < number:
+            solution = mid          # Store mid as a potential floor value.
+            left = mid + 1          # Search the right half for a larger value.
+        else:
+            right = mid - 1         # Search the left half for a smaller value.
+
+    return solution                 # Return the floor value of sqrt(number).
+
 
 if __name__ == "__main__":
     # Test cases
@@ -31,3 +61,5 @@ if __name__ == "__main__":
     print("Pass" if 4 == sqrt(16) else "Fail")  # Expected Output: Pass
     print("Pass" if 1 == sqrt(1) else "Fail")   # Expected Output: Pass
     print("Pass" if 5 == sqrt(27) else "Fail")  # Expected Output: Pass
+    print("Pass" if 37 == sqrt(1432) else "Fail")  # Expected Output: Pass
+    print("Pass" if None == sqrt(-2) else "Fail")  # Expected Output: Pass
