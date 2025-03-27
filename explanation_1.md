@@ -22,7 +22,7 @@ The key design choices include:
 1. **Binary Search Approach**:  
    - Since a brute-force approach would take ${O(\sqrt{n})}$ time, a more optimal solution is required.
    - The binary search technique allows us to efficiently narrow down the range of possible square roots.
-   - It reduces the problem size by half at each step, ensuring an optimal ${O(\log n)}$ runtime.
+   - It reduces the problem size by half at each step, ensuring an optimal ${O(\log\ n)}$ runtime.
 
 2. **Handling Edge Cases**:  
    - If the number is negative, we return ${None}$, as negative numbers do not have Real square roots.
@@ -39,16 +39,16 @@ This approach ensures the function runs efficiently while handling various edge 
 
 ## Time Efficiency
 
-The function achieves an ${O(\log n)}$ time complexity due to the binary search approach:
+The function achieves an ${O(\log\ n)}$ time complexity due to the binary search approach:
 
 1. **Binary Search Iteration**:
    - At each step, the search range is divided in half.
-   - This results in $\log n$ iterations, making it highly efficient.
+   - This results in ${\log\ n}$ iterations, making it highly efficient.
 
 2. **Comparison and Computation**:
    - Computing $mid\times{mid}$ and checking conditions all run in ${O(1)}$ time.
 
-Thus, the overall time complexity is ${O(\log n)}$.
+Thus, the overall time complexity is ${O(\log\ n)}$.
 
 ## Space Efficiency
 
