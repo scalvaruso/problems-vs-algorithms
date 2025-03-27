@@ -14,6 +14,7 @@ algorithm is correct. If necessary, add additional test cases to verify that
 your algorithm works correctly.
 """
 
+
 def rotated_array_search(input_list: list[int], number: int) -> int:
     """
     Find the index by searching in a rotated sorted array
@@ -25,7 +26,38 @@ def rotated_array_search(input_list: list[int], number: int) -> int:
     Returns:
     int: Index of the target number or -1 if not found
     """
-    pass
+
+    # Initialize pointers for binary search
+    left, right = 0, len(input_list) - 1
+
+    while left <= right:
+
+        mid = (left + right) // 2                               # Find the middle index
+
+        # Check if the middle element is the target
+        if input_list[mid] == number:
+            return mid                                          # Return target index
+
+        # Determine which half of the array is sorted
+        if input_list[left] <= input_list[mid]:
+            # Left half is sorted
+
+            # Check if the target is within the sorted left half
+            if input_list[left] <= number < input_list[mid]:
+                right = mid - 1                                 # Search in the left half
+            else:
+                left = mid + 1                                  # Search in the right half
+        else:
+            # Right half is sorted
+
+            # Check if the target is within the sorted right half
+            if input_list[mid] < number <= input_list[right]:
+                left = mid + 1                                  # Search in the right half
+            else:
+                right = mid - 1                                 # Search in the left half
+
+    return -1                                                   # Target not found
+
 
 # Test function using provided test cases
 def test_function(test_case: list[list[int], int]) -> None:
@@ -48,6 +80,7 @@ def test_function(test_case: list[list[int], int]) -> None:
     else:
         print("Fail")
 
+
 def linear_search(input_list: list[int], number: int) -> int:
     """
     Perform a linear search for a target number in a list of integers.
@@ -64,6 +97,7 @@ def linear_search(input_list: list[int], number: int) -> int:
             return index
     return -1
 
+
 if __name__ == '__main__':
     # Edge case: Empty input list
     test_function([[], 5])
@@ -79,4 +113,16 @@ if __name__ == '__main__':
 
     # Normal case: Number in the middle of the list
     test_function([[4, 5, 6, 7, 0, 1, 2], 6])
+    # Expected output: Pass
+
+    # Edge case: Number not in the list
+    test_function(([4, 5, 6, 7, 0, 1, 2], 9))
+    # Expected output: Pass
+
+    # Edge case: Single-element list
+    test_function(([5], 5))
+    # Expected output: Pass
+
+    # Edge case: Single-element list, target not present
+    test_function(([5], 1))
     # Expected output: Pass
