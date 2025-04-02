@@ -11,3 +11,11 @@ of time and space complexity. If necessary, you can support your explanation
 with code snippets or mathematical formulas. For guidance on how to write 
 formulas in markdown, refer to https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/writing-mathematical-expressions.
 -->
+
+# Problem 5
+
+## Reasoning Behind Decisions
+
+## Time Efficiency
+
+## Space Efficiency
