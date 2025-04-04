@@ -26,7 +26,30 @@ def sort_012(input_list: list[int]) -> list[int]:
     Returns:
     list[int]: The sorted list with all 0s, followed by all 1s, and then all 2s.
     """
-    pass
+    if input_list is None:
+        return []
+
+    # Pointers for the next positions of 0, current, and 2
+    left = 0                        # Next position for 0
+    current = 0                     # Current element being checked
+    right = len(input_list) - 1     # Next position for 2
+
+    while current <= right:
+        if input_list[current] == 0:
+            # Swap 0 to the left
+            input_list[left], input_list[current] = input_list[current], input_list[left]
+            left += 1
+            current += 1
+        elif input_list[current] == 1:
+            # 1 stays in the middle
+            current += 1
+        else:
+            # Swap 2 to the right
+            input_list[current], input_list[right] = input_list[right], input_list[current]
+            right -= 1
+
+    return input_list
+
 
 def test_function(test_case: list[list[int]]) -> None:
     """
@@ -63,4 +86,22 @@ if __name__ == "__main__":
 
     # Normal case: Reverse sorted list
     test_function([[2, 2, 1, 1, 0, 0]])
+    # Expected output: Pass
+
+    # Edge case: None input (interpreted as empty list)
+    test_function([[None]])
+    # Expected output: Pass (Note: interpreted as a list with None, not a None input)
+
+    # Edge case: Single element
+    test_function([[1]])
+    # Expected output: Pass
+
+    # Edge case: All elements the same
+    test_function([[0, 0, 0, 0]])
+    test_function([[1, 1, 1]])
+    test_function([[2, 2, 2, 2, 2, 2]])
+    # Expected output: Pass for all
+
+    # Edge case: Very large input
+    test_function([[0, 1, 2] * 10000])  # 30,000 elements
     # Expected output: Pass
