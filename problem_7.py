@@ -32,7 +32,8 @@ class RouteTrieNode:
         """
         Initialize a RouteTrieNode with an empty dictionary for children and no handler.
         """
-        pass
+        self.children: dict[str, RouteTrieNode] = {}    # Stores child nodes for each path part
+        self.handler: Optional[str] = None              # The handler for the route ending at this node
 
 class RouteTrie:
     """
@@ -48,7 +49,8 @@ class RouteTrie:
         Args:
         root_handler (str): The handler for the root node.
         """
-        pass
+        self.root = RouteTrieNode()
+        self.root.handler = root_handler
 
     def insert(self, path_parts: list[str], handler: str) -> None:
         """
@@ -58,7 +60,14 @@ class RouteTrie:
         path_parts (list[str]): A list of parts of the route.
         handler (str): The handler for the route.
         """
-        pass
+        current_node = self.root
+        for part in path_parts:
+            # Create a child node if it does not exist for this part
+            if part not in current_node.children:
+                current_node.children[part] = RouteTrieNode()
+            current_node = current_node.children[part]
+        # Set the handler at the leaf node of the path
+        current_node.handler = handler
 
     def find(self, path_parts: list[str]) ->  Optional[str]:
         """
@@ -70,7 +79,13 @@ class RouteTrie:
         Returns:
         str or None: The handler for the route if found, otherwise None.
         """
-        pass
+        current_node = self.root
+        for part in path_parts:
+            # If the path part is not found in the children, return None
+            if part not in current_node.children:
+                return None
+            current_node = current_node.children[part]
+        return current_node.handler
 
 class Router:
     """
@@ -88,7 +103,8 @@ class Router:
         root_handler (str): The handler for the root route.
         not_found_handler (str): The handler for routes that are not found.
         """
-        pass
+        self.route_trie = RouteTrie(root_handler)
+        self.not_found_handler = not_found_handler
 
     def add_handler(self, path: str, handler: str) -> None:
         """
@@ -98,7 +114,8 @@ class Router:
         path (str): The route path.
         handler (str): The handler for the route.
         """
-        pass
+        path_parts = self.split_path(path)
+        self.route_trie.insert(path_parts, handler)
 
     def lookup(self, path: str) -> str:
         """
@@ -110,7 +127,11 @@ class Router:
         Returns:
         str: The handler for the route if found, otherwise the not-found handler.
         """
-        pass
+        if path == "":
+            return self.not_found_handler
+        path_parts = self.split_path(path)
+        handler = self.route_trie.find(path_parts)
+        return handler if handler else self.not_found_handler
 
     def split_path(self, path: str) -> list[str]:
         """
@@ -122,10 +143,12 @@ class Router:
         Returns:
             List[str]: A list of parts of the path.
         """
-        pass
+        # Remove leading/trailing slashes and split by slash
+        return [part for part in path.strip("/").split("/") if part]
 
+# Test cases
 if __name__ == '__main__':
-    # create the router and add a route
+    # Create the router and add a route
     router = Router("root handler", "not found handler")
     router.add_handler("/home/about", "about handler")
 
@@ -143,4 +166,8 @@ if __name__ == '__main__':
 
     # Normal case: Path with exact match
     print(router.lookup("/home/about"))
+    # Expected output: 'about handler'
+
+    # Normal case: Path with trailing slash
+    print(router.lookup("/home/about/"))
     # Expected output: 'about handler'
