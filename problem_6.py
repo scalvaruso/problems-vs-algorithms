@@ -24,7 +24,25 @@ def get_min_max(ints: list[int]) -> Optional[tuple[int, int]]:
     Optional[tuple[int, int]]: A tuple containing the minimum and maximum 
     integer, or None if the list is empty
     """
-    pass
+    # Handle edge case: empty list returns None
+    if not ints:
+        return None
+
+    # Initialize min and max with the first element of the list
+    min_val = max_val = ints[0]
+
+    # Traverse the rest of the list starting from the second element
+    for i in range(1, len(ints)):
+        # Update min_val if the current element is smaller
+        if ints[i] < min_val:
+            min_val = ints[i]
+        # Update max_val if the current element is larger
+        elif ints[i] > max_val:
+            max_val = ints[i]
+
+    # Return the result as a tuple (min, max)
+    return (min_val, max_val)
+
 
 if __name__ == '__main__':
     # Edge case: Empty input list
@@ -42,3 +60,15 @@ if __name__ == '__main__':
     # Normal case: list with already sorted numbers
     print(get_min_max([1, 2, 3, 4, 5]))
     # Expected output: (1, 5)
+
+    # Edge case: All same elements
+    print(get_min_max([1, 1, 1, 1]))
+    # Expected: (1, 1)
+
+    # Edge case: Single element
+    print(get_min_max([42]))
+    # Expected: (42, 42)
+
+    # Edge case: Large input
+    print(get_min_max(list(range(-1000000, 1000000))))
+    # Expected: (-1000000, 999999)
